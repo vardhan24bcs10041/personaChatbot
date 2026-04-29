@@ -1,6 +1,6 @@
-# Persona Chatbot — Scaler Academy
+# Persona Chatbot — GenAI Assignment
 
-A persona-based AI chatbot that lets you have real conversations with three Scaler/InterviewBit personalities: **Anshuman Singh**, **Abhimanyu Saxena**, and **Kshitij Mishra**. Each persona has a meticulously crafted system prompt with distinct personality, vocabulary, and mentorship style.
+A persona-based AI chatbot that lets you have real conversations with three Scaler/InterviewBit personalities: **Anshuman Singh**, **Abhimanyu Saxena**, and **Kshitij Mishra**. Each persona has a meticulously crafted system prompt with distinct personality, vocabulary, and mentorship style — powered by Google Gemini 2.5 Flash.
 
 > **Live Demo:** [https://persona-chatbot-mewq.onrender.com](https://persona-chatbot-mewq.onrender.com)
 
@@ -8,24 +8,42 @@ A persona-based AI chatbot that lets you have real conversations with three Scal
 
 ## Features
 
-- **Three distinct AI personas** — each with unique tone, vocabulary, and teaching philosophy
+- **Three distinct AI personas** — each with unique tone, vocabulary, few-shot examples, hidden chain-of-thought reasoning, and teaching philosophy
 - **Persona switcher** — switch between personalities with a single click; conversation resets automatically
-- **Suggestion chips** — quick-start questions tailored to each persona
-- **Typing indicator** — animated dots while the AI is thinking
-- **Responsive design** — works beautifully on both desktop and mobile
-- **Error handling** — graceful error messages if the API fails
-- **Dark theme** — premium glassmorphism UI with persona-specific accent colors
+- **Suggestion chips** — quick-start questions tailored to each persona's domain
+- **Typing indicator** — animated dots while the AI generates a response
+- **Responsive design** — fully optimized for desktop, tablet, and mobile (down to 320px)
+- **Graceful error handling** — user-friendly toast notifications for API failures and rate limits
+- **Premium dark theme** — glassmorphism UI with animated gradient mesh background, per-persona accent colors, and micro-animations
+- **Retry logic** — automatic retry with backoff on rate-limited API requests
 
 ---
 
 ## Tech Stack
 
-| Layer    | Technology          |
-|----------|---------------------|
-| Frontend | HTML, CSS, JavaScript (Vanilla) |
-| Backend  | Python, Flask, Flask-CORS |
-| LLM API  | Google Gemini 2.0 Flash |
+| Layer      | Technology                       |
+|------------|----------------------------------|
+| Frontend   | HTML, CSS, JavaScript (Vanilla)  |
+| Backend    | Python, Flask, Flask-CORS        |
+| LLM API    | Google Gemini 2.5 Flash          |
 | Deployment | Render (Backend: Web Service, Frontend: Static Site) |
+
+---
+
+## Personas
+
+| Persona            | Style                                | Accent Color |
+|--------------------|--------------------------------------|--------------|
+| **Anshuman Singh**     | Intense, direct, performance-focused | Amber        |
+| **Abhimanyu Saxena**   | Calm, strategic, product-first       | Cyan         |
+| **Kshitij Mishra**     | Systematic, disciplined, dry humor   | Purple       |
+
+Each persona prompt includes:
+- Detailed background and communication style
+- Three few-shot example conversations
+- Hidden chain-of-thought reasoning instructions
+- Output format and length constraints
+- Explicit behavioral boundaries
 
 ---
 
@@ -34,20 +52,50 @@ A persona-based AI chatbot that lets you have real conversations with three Scal
 ```
 personaChatbot/
 ├── backend/
-│   ├── app.py              # Flask API server
-│   ├── personas.py         # System prompts for all 3 personas
-│   ├── requirements.txt    # Python dependencies
-│   ├── .env.example        # Environment variable template
-│   └── .env                # (gitignored) your actual API key
+│   ├── app.py              Flask API server (POST /api/chat, GET /health)
+│   ├── personas.py         System prompts for all 3 personas
+│   ├── requirements.txt    Python dependencies
+│   ├── .env.example        Environment variable template
+│   └── .env                (gitignored) your actual API key
 ├── frontend/
-│   ├── index.html          # Chat UI
-│   ├── style.css           # Styling (dark theme, glassmorphism)
-│   ├── script.js           # Chat logic & persona switching
-│   └── assets/             # Persona avatar images
-├── prompts.md              # All 3 prompts with design annotations
-├── reflection.md           # 300–500 word reflection
-├── README.md               # This file
+│   ├── index.html          Chat interface
+│   ├── style.css           Dark theme with glassmorphism and animations
+│   ├── script.js           Chat logic, persona switching, API calls
+│   └── assets/             Persona avatar images (PNG)
+├── prompts.md              All 3 prompts with annotated design decisions
+├── reflection.md           300–500 word reflection on GIGO and learnings
+├── README.md               This file
 └── .gitignore
+```
+
+---
+
+## API Endpoints
+
+| Method | Endpoint     | Description                                |
+|--------|--------------|--------------------------------------------|
+| POST   | `/api/chat`  | Send a message and get a persona response  |
+| GET    | `/health`    | Health check, returns available personas    |
+
+### POST `/api/chat` — Request Body
+
+```json
+{
+  "persona": "anshuman",
+  "messages": [
+    { "role": "user", "content": "Which framework should I learn?" },
+    { "role": "assistant", "content": "Stop chasing frameworks..." },
+    { "role": "user", "content": "What about React?" }
+  ]
+}
+```
+
+### Response
+
+```json
+{
+  "reply": "The persona's response text..."
+}
 ```
 
 ---
@@ -57,12 +105,12 @@ personaChatbot/
 ### Prerequisites
 
 - Python 3.9+
-- A Google Gemini API key ([Get one here](https://aistudio.google.com/apikey))
+- A Google Gemini API key
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/personaChatbot.git
+git clone https://github.com/vardhan24bcs10041/personaChatbot.git
 cd personaChatbot
 ```
 
@@ -74,8 +122,7 @@ python -m venv venv
 
 # Windows
 venv\Scripts\activate
-# macOS/Linux
-source venv/bin/activate
+
 
 pip install -r requirements.txt
 ```
@@ -84,8 +131,9 @@ pip install -r requirements.txt
 
 ```bash
 cp .env.example .env
-# Edit .env and replace 'your_gemini_api_key_here' with your actual key
 ```
+
+Edit `.env` and add your actual key.
 
 ### 4. Start the backend
 
@@ -97,16 +145,16 @@ The backend will start at `http://localhost:5000`.
 
 ### 5. Start the frontend
 
-Open `frontend/index.html` in your browser, or use a local server:
+Open `frontend/index.html` directly in your browser, or serve it locally:
 
 ```bash
 cd ../frontend
 python -m http.server 8080
 ```
 
-Then open `http://localhost:8080` in your browser.
+Then open `http://localhost:8080`.
 
-> **Note:** For local development, `script.js` uses `http://localhost:5000` as the API URL. Update the `API_BASE_URL` constant in `script.js` to your Render backend URL before deploying the frontend.
+> **Note:** For local development, update the `API_BASE_URL` constant at the top of `script.js` to `http://localhost:5000`. Change it back to your Render backend URL before deploying.
 
 ---
 
@@ -115,11 +163,11 @@ Then open `http://localhost:8080` in your browser.
 ### Backend (Web Service)
 
 1. Create a new **Web Service** on Render
-2. Connect your GitHub repo
+2. Connect the GitHub repo
 3. Set **Root Directory** to `backend`
 4. Set **Build Command** to `pip install -r requirements.txt`
 5. Set **Start Command** to `gunicorn app:app`
-6. Add environment variable: `GEMINI_API_KEY` = your API key
+6. Add environment variable: `GEMINI_API_KEY` = the API key
 
 ### Frontend (Static Site)
 
@@ -127,21 +175,19 @@ Then open `http://localhost:8080` in your browser.
 2. Connect the same GitHub repo
 3. Set **Root Directory** to `frontend`
 4. Set **Publish Directory** to `./`
-5. **Before deploying:** Update `API_BASE_URL` in `script.js` to your backend's Render URL
+5. Ensure `API_BASE_URL` in `script.js` points to the backend's Render URL
 
 ---
 
 ## Environment Variables
 
-| Variable         | Description                | Required |
-|------------------|----------------------------|----------|
-| `GEMINI_API_KEY` | Google Gemini API key      | Yes      |
-
-> ⚠️ Never commit your `.env` file. Use `.env.example` as a template.
+| Variable         | Description           | Required |
+|------------------|-----------------------|----------|
+| `GEMINI_API_KEY` | Google Gemini API key | Yes      |
 
 ---
 
 ## Documentation
 
 - **[prompts.md](./prompts.md)** — All three system prompts with annotated design decisions
-- **[reflection.md](./reflection.md)** — 300–500 word reflection on GIGO, learnings, and improvements
+- **[reflection.md](./reflection.md)** — Reflection on GIGO, prompt engineering learnings, and future improvements
