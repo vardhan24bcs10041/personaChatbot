@@ -1,34 +1,35 @@
-const API_BASE_URL = "https://personachatbot-2iwf.onrender.com";
+const API_BASE_URL = "http://localhost:5000"; 
+// const API_BASE_URL = "https://personachatbot-2iwf.onrender.com"; // Production URL
 
 const PERSONA_DATA = {
     anshuman: {
         name: "Anshuman Singh",
-        title: "The High-Performance Architect",
+        title: "The Visionary Coach",
         avatar: "assets/anshuman.png",
         suggestions: [
-            "Which framework should I learn in 2026?",
-            "How do I crack FAANG interviews?",
-            "Is it okay to skip Math for coding?",
+            "I'm struggling with DP. Should I just memorize patterns?",
+            "Is learning C++ still worth it for big tech?",
+            "Is it worth starting a startup in this market?",
         ],
     },
     abhimanyu: {
         name: "Abhimanyu Saxena",
-        title: "The Strategic Builder",
+        title: "The Strategic Architect",
         avatar: "assets/abhimanyu.png",
         suggestions: [
-            "How do I build a startup as a developer?",
-            "Should I use Microservices for my new idea?",
-            "Is it better to be a specialist or generalist?",
+            "My startup is struggling to hire. Should I lower the bar?",
+            "Monolith or Microservices for a new MVP?",
+            "Does a degree from a top IIT really matter?",
         ],
     },
     kshitij: {
         name: "Kshitij Mishra",
-        title: "The Pragmatic Architect & Disciplinarian",
+        title: "The Clinical Mastermind",
         avatar: "assets/kshitij.png",
         suggestions: [
-            "Can you explain the Flyweight pattern simply?",
-            "How do I prepare for an LLD viva?",
-            "What are the most common code smells?",
+            "Why bother with SOLID if my code already works?",
+            "I'm late to class. Does it really matter?",
+            "I feel like I'm moving slower than the others.",
         ],
     },
 };

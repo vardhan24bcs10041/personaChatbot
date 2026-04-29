@@ -1,6 +1,6 @@
 # Persona Chatbot — GenAI Assignment
 
-A persona-based AI chatbot that lets you have real conversations with three Scaler/InterviewBit personalities: **Anshuman Singh**, **Abhimanyu Saxena**, and **Kshitij Mishra**. Each persona has a meticulously crafted system prompt with distinct personality, vocabulary, and mentorship style — powered by Google Gemini 2.5 Flash.
+A persona-based AI chatbot that lets you have real conversations with three Scaler/InterviewBit personalities: **Anshuman Singh**, **Abhimanyu Saxena**, and **Kshitij Mishra**. Each persona has a meticulously crafted system prompt with distinct personality, vocabulary, and mentorship style — powered by Google Gemini 3.1 Flash Lite.
 
 > **Live Demo:** [https://persona-chatbot-mewq.onrender.com](https://persona-chatbot-mewq.onrender.com)
 
@@ -21,24 +21,25 @@ A persona-based AI chatbot that lets you have real conversations with three Scal
 
 ## Tech Stack
 
-| Layer      | Technology                       |
-|------------|----------------------------------|
-| Frontend   | HTML, CSS, JavaScript (Vanilla)  |
-| Backend    | Python, Flask, Flask-CORS        |
-| LLM API    | Google Gemini 2.5 Flash          |
+| Layer      | Technology                                           |
+| ---------- | ---------------------------------------------------- |
+| Frontend   | HTML, CSS, JavaScript (Vanilla)                      |
+| Backend    | Python, Flask, Flask-CORS                            |
+| LLM API    | Google Gemini 3.1 Flash Lite                              |
 | Deployment | Render (Backend: Web Service, Frontend: Static Site) |
 
 ---
 
 ## Personas
 
-| Persona            | Style                                | Accent Color |
-|--------------------|--------------------------------------|--------------|
-| **Anshuman Singh**     | Intense, direct, performance-focused | Amber        |
-| **Abhimanyu Saxena**   | Calm, strategic, product-first       | Cyan         |
-| **Kshitij Mishra**     | Systematic, disciplined, dry humor   | Purple       |
+| Persona              | Style                                | Accent Color |
+| -------------------- | ------------------------------------ | ------------ |
+| **Anshuman Singh**   | Intense, direct, performance-focused | Amber        |
+| **Abhimanyu Saxena** | Calm, strategic, product-first       | Cyan         |
+| **Kshitij Mishra**   | Systematic, disciplined, dry humor   | Purple       |
 
 Each persona prompt includes:
+
 - Detailed background and communication style
 - Three few-shot example conversations
 - Hidden chain-of-thought reasoning instructions
@@ -72,10 +73,10 @@ personaChatbot/
 
 ## API Endpoints
 
-| Method | Endpoint     | Description                                |
-|--------|--------------|--------------------------------------------|
-| POST   | `/api/chat`  | Send a message and get a persona response  |
-| GET    | `/health`    | Health check, returns available personas    |
+| Method | Endpoint    | Description                               |
+| ------ | ----------- | ----------------------------------------- |
+| POST   | `/api/chat` | Send a message and get a persona response |
+| GET    | `/health`   | Health check, returns available personas  |
 
 ### POST `/api/chat` — Request Body
 
@@ -182,7 +183,7 @@ Then open `http://localhost:8080`.
 ## Environment Variables
 
 | Variable         | Description           | Required |
-|------------------|-----------------------|----------|
+| ---------------- | --------------------- | -------- |
 | `GEMINI_API_KEY` | Google Gemini API key | Yes      |
 
 ---

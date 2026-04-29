@@ -39,19 +39,28 @@ def chat():
                          f"Valid options: {', '.join(PERSONAS.keys())}"
             }), 400
 
-        if not messages or not isinstance(messages, list):
-            return jsonify({"error": "Messages must be a non-empty list."}), 400
-
         persona = PERSONAS[persona_key]
         system_prompt = persona["prompt"]
 
-        contents = []
+        cleaned_messages = []
         for msg in messages:
-            role = "user" if msg.get("role") == "user" else "model"
+            content = msg.get("content", "").strip()
+            role = msg.get("role")
+            if content and role in ["user", "assistant", "model"]:
+                cleaned_messages.append({
+                    "role": "user" if role == "user" else "model",
+                    "content": content
+                })
+
+        if not cleaned_messages:
+            return jsonify({"error": "No valid messages found in history."}), 400
+
+        contents = []
+        for msg in cleaned_messages:
             contents.append(
                 types.Content(
-                    role=role,
-                    parts=[types.Part.from_text(text=msg.get("content", ""))],
+                    role=msg["role"],
+                    parts=[types.Part.from_text(text=msg["content"])],
                 )
             )
 
@@ -60,7 +69,7 @@ def chat():
         for attempt in range(max_retries + 1):
             try:
                 response = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-3.1-flash-lite-preview",
                     contents=contents,
                     config=types.GenerateContentConfig(
                         system_instruction=system_prompt,
@@ -72,7 +81,7 @@ def chat():
             except Exception as api_err:
                 last_error = api_err
                 err_str = str(api_err)
-                if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
+                if any(x in err_str for x in ["429", "RESOURCE_EXHAUSTED", "503", "UNAVAILABLE"]):
                     if attempt < max_retries:
                         wait_time = (attempt + 1) * 5
                         print(f"[WARN] Rate limited, retrying in {wait_time}s (attempt {attempt + 1}/{max_retries})")
@@ -85,10 +94,12 @@ def chat():
                 raise
 
     except Exception as e:
-        print(f"[ERROR] /api/chat failed: {type(e).__name__}: {e}")
+        import traceback
+        error_msg = f"{type(e).__name__}: {str(e)}"
+        print(f"[ERROR] /api/chat failed: {error_msg}")
+        print(traceback.format_exc())
         return jsonify({
-            "error": "Something went wrong while generating a response. "
-                     "Please try again in a moment."
+            "error": f"Something went wrong: {error_msg}. Please try again."
         }), 500
 
 
