@@ -6,7 +6,7 @@
 
 // ---- Configuration ----
 // Change this to your deployed backend URL on Render before deploying the frontend
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "https://personachatbot-2iwf.onrender.com";
 
 // ---- Persona Data ----
 const PERSONA_DATA = {
