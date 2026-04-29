@@ -1,5 +1,5 @@
-const API_BASE_URL = "http://localhost:5000"; 
-// const API_BASE_URL = "https://personachatbot-2iwf.onrender.com"; // Production URL
+const API_BASE_URL = "https://personachatbot-2iwf.onrender.com"; 
+// const API_BASE_URL = "http://localhost:5000"; // Local Development URL
 
 const PERSONA_DATA = {
     anshuman: {
