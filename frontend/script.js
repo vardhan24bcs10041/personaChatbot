@@ -1,14 +1,5 @@
-/* ============================================
-   PERSONA CHATBOT — APPLICATION LOGIC
-   State management, persona switching, API calls,
-   message rendering, and error handling.
-   ============================================ */
-
-// ---- Configuration ----
-// Change this to your deployed backend URL on Render before deploying the frontend
 const API_BASE_URL = "https://personachatbot-2iwf.onrender.com";
 
-// ---- Persona Data ----
 const PERSONA_DATA = {
     anshuman: {
         name: "Anshuman Singh",
@@ -42,12 +33,10 @@ const PERSONA_DATA = {
     },
 };
 
-// ---- State ----
 let currentPersona = "anshuman";
-let conversationHistory = []; // { role: "user"|"assistant", content: "..." }
+let conversationHistory = [];
 let isLoading = false;
 
-// ---- DOM References ----
 const messagesContainer = document.getElementById("messages-container");
 const welcomeScreen = document.getElementById("welcome-screen");
 const welcomeAvatar = document.getElementById("welcome-avatar");
@@ -64,58 +53,46 @@ const badgeName = document.getElementById("badge-name");
 const errorToast = document.getElementById("error-toast");
 const errorToastMessage = document.getElementById("error-toast-message");
 
-// ---- Initialization ----
 document.addEventListener("DOMContentLoaded", () => {
     switchPersona("anshuman");
     messageInput.addEventListener("input", updateSendButton);
 });
 
-// ---- Persona Switching ----
 function switchPersona(persona) {
-    if (isLoading) return; // Don't switch while a response is loading
+    if (isLoading) return;
 
     currentPersona = persona;
     conversationHistory = [];
     const data = PERSONA_DATA[persona];
 
-    // Update body class for CSS accent colors
     document.body.className = `persona-${persona}`;
 
-    // Update persona cards active state
     document.querySelectorAll(".persona-card").forEach((card) => {
         card.classList.toggle("active", card.dataset.persona === persona);
     });
 
-    // Update header badge
     badgeAvatar.src = data.avatar;
     badgeName.textContent = data.name;
 
-    // Update welcome screen
     welcomeAvatar.src = data.avatar;
     welcomeName.textContent = data.name;
     welcomeTitle.textContent = data.title;
 
-    // Update typing indicator avatar
     typingAvatar.src = data.avatar;
 
-    // Clear messages and show welcome
     messagesContainer.innerHTML = "";
     welcomeScreen.style.display = "flex";
     welcomeScreen.style.animation = "none";
-    // Trigger reflow for animation restart
     void welcomeScreen.offsetHeight;
     welcomeScreen.style.animation = "fadeIn 0.4s ease";
 
-    // Update suggestion chips
     renderSuggestionChips(data.suggestions);
 
-    // Reset input
     messageInput.value = "";
     updateSendButton();
     messageInput.focus();
 }
 
-// ---- Suggestion Chips ----
 function renderSuggestionChips(suggestions) {
     suggestionChips.innerHTML = "";
     suggestions.forEach((text) => {
@@ -127,7 +104,6 @@ function renderSuggestionChips(suggestions) {
     });
 }
 
-// ---- Message Sending ----
 function handleSubmit(event) {
     event.preventDefault();
     const text = messageInput.value.trim();
@@ -136,7 +112,6 @@ function handleSubmit(event) {
 }
 
 function handleKeyDown(event) {
-    // Send on Enter (without Shift)
     if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault();
         const text = messageInput.value.trim();
@@ -148,22 +123,17 @@ function handleKeyDown(event) {
 async function sendMessage(text) {
     if (isLoading) return;
 
-    // Hide welcome screen on first message
     welcomeScreen.style.display = "none";
 
-    // Add user message to UI and history
     appendMessage("user", text);
     conversationHistory.push({ role: "user", content: text });
 
-    // Clear input
     messageInput.value = "";
     updateSendButton();
     autoResize(messageInput);
 
-    // Hide suggestion chips after first message
     suggestionChips.innerHTML = "";
 
-    // Show typing indicator
     setLoading(true);
 
     try {
@@ -184,7 +154,6 @@ async function sendMessage(text) {
 
         const reply = result.reply;
 
-        // Add assistant message to UI and history
         appendMessage("assistant", reply);
         conversationHistory.push({ role: "assistant", content: reply });
     } catch (error) {
@@ -197,7 +166,6 @@ async function sendMessage(text) {
     }
 }
 
-// ---- Message Rendering ----
 function appendMessage(role, content) {
     const row = document.createElement("div");
     row.className = `message-row ${role}`;
@@ -215,11 +183,8 @@ function appendMessage(role, content) {
     const bubble = document.createElement("div");
     bubble.className = "message-bubble";
 
-    // Basic markdown-like formatting for bold text
     let formatted = escapeHtml(content);
-    // Convert **bold** to <strong>bold</strong>
     formatted = formatted.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-    // Convert line breaks
     formatted = formatted.replace(/\n/g, "<br>");
 
     bubble.innerHTML = formatted;
@@ -237,13 +202,11 @@ function escapeHtml(text) {
 
 function scrollToBottom() {
     const chatContainer = document.getElementById("chat-container");
-    // Small delay to let the DOM update
     requestAnimationFrame(() => {
         chatContainer.scrollTop = chatContainer.scrollHeight;
     });
 }
 
-// ---- Loading / Typing Indicator ----
 function setLoading(loading) {
     isLoading = loading;
     typingIndicator.classList.toggle("hidden", !loading);
@@ -255,7 +218,6 @@ function setLoading(loading) {
     }
 }
 
-// ---- Input Helpers ----
 function updateSendButton() {
     sendBtn.disabled = !messageInput.value.trim() || isLoading;
 }
@@ -265,12 +227,10 @@ function autoResize(textarea) {
     textarea.style.height = Math.min(textarea.scrollHeight, 120) + "px";
 }
 
-// ---- Error Toast ----
 function showError(message) {
     errorToastMessage.textContent = message;
     errorToast.classList.remove("hidden");
 
-    // Auto-hide after 5 seconds
     setTimeout(() => {
         errorToast.classList.add("hidden");
     }, 5000);

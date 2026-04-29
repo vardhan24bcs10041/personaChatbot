@@ -1,67 +1,52 @@
-/* ============================================
-   PERSONA CHATBOT — STYLE SYSTEM
-   Dark theme with glassmorphism, persona-specific
-   accent colors, and rich micro-animations.
-   ============================================ */
-
-/* ---- CSS Custom Properties ---- */
 :root {
-    /* Base colors */
-    --bg-primary: #0a0a1a;
-    --bg-secondary: #111128;
+    --bg-primary: #06060f;
+    --bg-secondary: #0c0c1d;
     --bg-surface: rgba(255, 255, 255, 0.04);
-    --bg-surface-hover: rgba(255, 255, 255, 0.07);
+    --bg-surface-hover: rgba(255, 255, 255, 0.08);
+    --bg-surface-active: rgba(255, 255, 255, 0.06);
 
-    --text-primary: #e8e8f0;
-    --text-secondary: #9a9ab5;
-    --text-muted: #5a5a75;
+    --text-primary: #eaeaf4;
+    --text-secondary: #a0a0c0;
+    --text-muted: #55557a;
 
     --border-subtle: rgba(255, 255, 255, 0.06);
-    --border-glow: rgba(255, 255, 255, 0.1);
+    --border-glow: rgba(255, 255, 255, 0.12);
 
-    /* Persona accent colors */
     --accent-anshuman: #f59e0b;
     --accent-anshuman-glow: rgba(245, 158, 11, 0.25);
-    --accent-anshuman-soft: rgba(245, 158, 11, 0.1);
+    --accent-anshuman-soft: rgba(245, 158, 11, 0.08);
 
-    --accent-abhimanyu: #06b6d4;
-    --accent-abhimanyu-glow: rgba(6, 182, 212, 0.25);
-    --accent-abhimanyu-soft: rgba(6, 182, 212, 0.1);
+    --accent-abhimanyu: #22d3ee;
+    --accent-abhimanyu-glow: rgba(34, 211, 238, 0.25);
+    --accent-abhimanyu-soft: rgba(34, 211, 238, 0.08);
 
-    --accent-kshitij: #8b5cf6;
-    --accent-kshitij-glow: rgba(139, 92, 246, 0.25);
-    --accent-kshitij-soft: rgba(139, 92, 246, 0.1);
+    --accent-kshitij: #a78bfa;
+    --accent-kshitij-glow: rgba(167, 139, 250, 0.25);
+    --accent-kshitij-soft: rgba(167, 139, 250, 0.08);
 
-    /* Active accent (default: Anshuman) */
     --accent: var(--accent-anshuman);
     --accent-glow: var(--accent-anshuman-glow);
     --accent-soft: var(--accent-anshuman-soft);
 
-    /* Sizing */
     --header-height: 64px;
-    --bottom-height: auto;
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
     --radius-xl: 20px;
     --radius-full: 9999px;
 
-    /* Shadows */
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-    --shadow-glow: 0 0 20px var(--accent-glow);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.6);
+    --shadow-glow: 0 0 24px var(--accent-glow);
 
-    /* Transitions */
     --transition-fast: 150ms ease;
-    --transition-normal: 250ms ease;
-    --transition-slow: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-normal: 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 450ms cubic-bezier(0.16, 1, 0.3, 1);
 
-    /* Font */
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-/* ---- Reset & Base ---- */
 *,
 *::before,
 *::after {
@@ -84,28 +69,47 @@ body {
     overflow: hidden;
     height: 100dvh;
     width: 100vw;
+    position: relative;
 }
 
-/* ---- App Layout ---- */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 80% 60% at 10% 20%, rgba(139, 92, 246, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 90% 80%, rgba(245, 158, 11, 0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% 50%, rgba(34, 211, 238, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+    animation: meshShift 20s ease-in-out infinite alternate;
+}
+
+@keyframes meshShift {
+    0% { opacity: 0.7; filter: hue-rotate(0deg); }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; filter: hue-rotate(15deg); }
+}
+
 #app {
     display: flex;
     flex-direction: column;
     height: 100dvh;
-    max-width: 900px;
+    max-width: 920px;
     margin: 0 auto;
     position: relative;
+    z-index: 1;
 }
 
-/* ---- Header ---- */
 #app-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 20px;
+    padding: 12px 24px;
     height: var(--header-height);
-    background: rgba(17, 17, 40, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(12, 12, 29, 0.7);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
     border-bottom: 1px solid var(--border-subtle);
     z-index: 100;
     flex-shrink: 0;
@@ -124,9 +128,10 @@ body {
     align-items: center;
     justify-content: center;
     background: var(--accent-soft);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: var(--radius-md);
     color: var(--accent);
-    transition: background var(--transition-normal), color var(--transition-normal);
+    transition: all var(--transition-normal);
 }
 
 #app-header h1 {
@@ -137,11 +142,11 @@ body {
 }
 
 .header-subtitle {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     color: var(--text-muted);
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
 }
 
 .active-persona-badge {
@@ -153,6 +158,8 @@ body {
     border: 1px solid var(--accent-glow);
     border-radius: var(--radius-full);
     transition: all var(--transition-normal);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .active-persona-badge img {
@@ -160,6 +167,7 @@ body {
     height: 28px;
     border-radius: 50%;
     object-fit: cover;
+    border: 1.5px solid var(--accent);
 }
 
 .active-persona-badge span {
@@ -170,7 +178,6 @@ body {
     transition: color var(--transition-normal);
 }
 
-/* ---- Main Content ---- */
 #main-content {
     flex: 1;
     display: flex;
@@ -179,11 +186,10 @@ body {
     min-height: 0;
 }
 
-/* ---- Persona Switcher ---- */
 #persona-switcher {
     display: flex;
     gap: 10px;
-    padding: 14px 20px;
+    padding: 16px 24px;
     overflow-x: auto;
     flex-shrink: 0;
     scrollbar-width: none;
@@ -196,10 +202,10 @@ body {
 .persona-card {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 16px;
+    gap: 12px;
+    padding: 12px 18px;
     min-width: 220px;
-    background: var(--bg-surface);
+    background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-lg);
     cursor: pointer;
@@ -209,22 +215,37 @@ body {
     font-family: inherit;
     color: inherit;
     text-align: left;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .persona-card::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.02) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
     opacity: 0;
     transition: opacity var(--transition-normal);
+}
+
+.persona-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, var(--accent-soft) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+    pointer-events: none;
 }
 
 .persona-card:hover {
     background: var(--bg-surface-hover);
     border-color: var(--border-glow);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .persona-card:hover::before {
@@ -234,7 +255,11 @@ body {
 .persona-card.active {
     border-color: var(--accent);
     background: var(--accent-soft);
-    box-shadow: var(--shadow-glow);
+    box-shadow: var(--shadow-glow), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.persona-card.active::after {
+    opacity: 1;
 }
 
 .persona-avatar {
@@ -243,18 +268,20 @@ body {
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid transparent;
-    transition: border-color var(--transition-normal);
+    transition: all var(--transition-normal);
     flex-shrink: 0;
 }
 
 .persona-card.active .persona-avatar {
     border-color: var(--accent);
+    box-shadow: 0 0 12px var(--accent-glow);
 }
 
 .persona-info {
     display: flex;
     flex-direction: column;
     min-width: 0;
+    gap: 2px;
 }
 
 .persona-name {
@@ -283,9 +310,9 @@ body {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%) scaleX(0);
-    width: 40%;
+    width: 50%;
     height: 2px;
-    background: var(--accent);
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
     border-radius: 2px 2px 0 0;
     transition: transform var(--transition-slow);
 }
@@ -294,11 +321,10 @@ body {
     transform: translateX(-50%) scaleX(1);
 }
 
-/* ---- Chat Container ---- */
 #chat-container {
     flex: 1;
     overflow-y: auto;
-    padding: 20px;
+    padding: 20px 24px;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -315,11 +341,14 @@ body {
 }
 
 #chat-container::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 4px;
 }
 
-/* ---- Welcome Screen ---- */
+#chat-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
 #welcome-screen {
     display: flex;
     flex-direction: column;
@@ -328,16 +357,16 @@ body {
     text-align: center;
     padding: 40px 20px;
     flex: 1;
-    animation: fadeIn 0.5s ease;
+    animation: fadeIn 0.6s ease;
 }
 
 .welcome-avatar-ring {
-    width: 96px;
-    height: 96px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     padding: 3px;
-    background: conic-gradient(from 0deg, var(--accent), transparent 60%, var(--accent));
-    margin-bottom: 16px;
+    background: conic-gradient(from 0deg, var(--accent), transparent 40%, var(--accent) 80%, transparent);
+    margin-bottom: 20px;
     animation: spin-slow 6s linear infinite;
     transition: background var(--transition-normal);
 }
@@ -351,32 +380,38 @@ body {
 }
 
 #welcome-name {
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
     margin-bottom: 4px;
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 #welcome-title {
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     color: var(--accent);
     font-weight: 500;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     transition: color var(--transition-normal);
+    opacity: 0.85;
 }
 
 .welcome-hint {
     font-size: 0.8rem;
     color: var(--text-muted);
+    max-width: 300px;
+    line-height: 1.5;
 }
 
-/* ---- Messages ---- */
 .message-row {
     display: flex;
-    gap: 8px;
-    max-width: 85%;
-    animation: messageSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    margin-bottom: 6px;
+    gap: 10px;
+    max-width: 82%;
+    animation: messageSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    margin-bottom: 8px;
 }
 
 .message-row.user {
@@ -389,12 +424,13 @@ body {
 }
 
 .message-avatar {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
     margin-top: 4px;
+    border: 1.5px solid var(--border-subtle);
 }
 
 .message-row.user .message-avatar {
@@ -402,26 +438,30 @@ body {
 }
 
 .message-bubble {
-    padding: 10px 16px;
+    padding: 12px 18px;
     border-radius: var(--radius-lg);
     font-size: 0.88rem;
-    line-height: 1.65;
+    line-height: 1.7;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    position: relative;
 }
 
 .message-row.user .message-bubble {
-    background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 70%, #000));
+    background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 65%, #1a1a2e));
     color: #000;
     border-bottom-right-radius: 4px;
     font-weight: 450;
+    box-shadow: 0 2px 12px var(--accent-glow);
 }
 
 .message-row.assistant .message-bubble {
-    background: var(--bg-surface);
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border-subtle);
     border-bottom-left-radius: 4px;
     color: var(--text-primary);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .message-bubble strong,
@@ -435,7 +475,6 @@ body {
     color: inherit;
 }
 
-/* ---- Typing Indicator ---- */
 .typing-indicator {
     display: flex;
     align-items: center;
@@ -454,27 +493,31 @@ body {
 }
 
 .typing-avatar-img {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     object-fit: cover;
+    border: 1.5px solid var(--border-subtle);
 }
 
 .typing-dots {
     display: flex;
-    gap: 4px;
-    padding: 10px 16px;
-    background: var(--bg-surface);
+    gap: 5px;
+    padding: 12px 18px;
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-lg);
     border-bottom-left-radius: 4px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .typing-dots span {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: var(--text-muted);
+    background: var(--accent);
+    opacity: 0.5;
     animation: typingBounce 1.4s infinite ease-in-out;
 }
 
@@ -482,19 +525,19 @@ body {
 .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
 .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
 
-/* ---- Bottom Section ---- */
 #bottom-section {
-    padding: 0 20px 16px;
+    padding: 0 24px 20px;
     flex-shrink: 0;
-    background: linear-gradient(to top, var(--bg-primary) 60%, transparent);
+    background: linear-gradient(to top, var(--bg-primary) 50%, transparent);
+    position: relative;
+    z-index: 10;
 }
 
-/* ---- Suggestion Chips ---- */
 .suggestion-chips {
     display: flex;
     gap: 8px;
     overflow-x: auto;
-    padding: 8px 0 12px;
+    padding: 8px 0 14px;
     scrollbar-width: none;
 }
 
@@ -503,27 +546,33 @@ body {
 }
 
 .chip {
-    padding: 8px 16px;
-    background: var(--bg-surface);
+    padding: 9px 18px;
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-full);
     font-size: 0.78rem;
     color: var(--text-secondary);
     cursor: pointer;
     white-space: nowrap;
-    transition: all var(--transition-fast);
+    transition: all var(--transition-normal);
     font-family: inherit;
     flex-shrink: 0;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
 .chip:hover {
     background: var(--accent-soft);
     border-color: var(--accent);
     color: var(--accent);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--accent-glow);
 }
 
-/* ---- Input Area ---- */
+.chip:active {
+    transform: translateY(0);
+}
+
 #input-form {
     width: 100%;
 }
@@ -532,16 +581,19 @@ body {
     display: flex;
     align-items: flex-end;
     gap: 8px;
-    background: var(--bg-surface);
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-xl);
-    padding: 6px 6px 6px 18px;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    padding: 6px 6px 6px 20px;
+    transition: all var(--transition-normal);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .input-wrapper:focus-within {
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-soft);
+    box-shadow: 0 0 0 3px var(--accent-soft), 0 4px 20px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.06);
 }
 
 #message-input {
@@ -563,56 +615,58 @@ body {
 }
 
 #send-btn {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--accent);
+    background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 80%, #fff));
     border: none;
     border-radius: var(--radius-md);
     color: #000;
     cursor: pointer;
     transition: all var(--transition-fast);
     flex-shrink: 0;
+    box-shadow: 0 2px 8px var(--accent-glow);
 }
 
 #send-btn:disabled {
-    opacity: 0.3;
+    opacity: 0.25;
     cursor: not-allowed;
     transform: none;
+    box-shadow: none;
 }
 
 #send-btn:not(:disabled):hover {
     filter: brightness(1.15);
-    transform: scale(1.05);
+    transform: scale(1.08);
+    box-shadow: 0 4px 16px var(--accent-glow);
 }
 
 #send-btn:not(:disabled):active {
     transform: scale(0.95);
 }
 
-/* ---- Error Toast ---- */
 .error-toast {
     position: fixed;
-    bottom: 90px;
+    bottom: 100px;
     left: 50%;
     transform: translateX(-50%) translateY(20px);
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 12px 20px;
-    background: rgba(239, 68, 68, 0.15);
-    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 14px 22px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.25);
     border-radius: var(--radius-md);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     color: #fca5a5;
     font-size: 0.82rem;
     font-weight: 500;
     z-index: 200;
     opacity: 1;
-    transition: all 0.3s ease;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     max-width: calc(100% - 40px);
 }
 
@@ -622,20 +676,19 @@ body {
     transform: translateX(-50%) translateY(30px);
 }
 
-/* ---- Animations ---- */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(14px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes messageSlideIn {
-    from { opacity: 0; transform: translateY(12px); }
+    from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes typingBounce {
-    0%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-6px); }
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+    40% { transform: translateY(-7px); opacity: 1; }
 }
 
 @keyframes spin-slow {
@@ -643,7 +696,6 @@ body {
     to   { transform: rotate(360deg); }
 }
 
-/* ---- Persona Color Themes ---- */
 body.persona-anshuman {
     --accent: var(--accent-anshuman);
     --accent-glow: var(--accent-anshuman-glow);
@@ -662,14 +714,17 @@ body.persona-kshitij {
     --accent-soft: var(--accent-kshitij-soft);
 }
 
-/* ---- Responsive ---- */
 @media (max-width: 640px) {
     #app-header {
-        padding: 10px 14px;
+        padding: 10px 16px;
     }
 
     #app-header h1 {
         font-size: 0.92rem;
+    }
+
+    .header-subtitle {
+        font-size: 0.6rem;
     }
 
     .active-persona-badge span {
@@ -678,16 +733,24 @@ body.persona-kshitij {
 
     .active-persona-badge {
         padding: 4px;
+        border: none;
+        background: transparent;
+    }
+
+    .active-persona-badge img {
+        width: 32px;
+        height: 32px;
     }
 
     #persona-switcher {
-        padding: 10px 14px;
+        padding: 12px 16px;
         gap: 8px;
     }
 
     .persona-card {
-        min-width: 180px;
-        padding: 8px 12px;
+        min-width: 175px;
+        padding: 10px 14px;
+        gap: 10px;
     }
 
     .persona-avatar {
@@ -696,31 +759,54 @@ body.persona-kshitij {
     }
 
     #chat-container {
-        padding: 14px;
+        padding: 14px 16px;
     }
 
     .message-row {
-        max-width: 92%;
+        max-width: 90%;
+    }
+
+    .message-bubble {
+        padding: 10px 14px;
+        font-size: 0.85rem;
+    }
+
+    .message-avatar {
+        width: 28px;
+        height: 28px;
     }
 
     #bottom-section {
-        padding: 0 14px 12px;
+        padding: 0 16px 14px;
     }
 
     #welcome-name {
-        font-size: 1.25rem;
+        font-size: 1.3rem;
+    }
+
+    #welcome-title {
+        font-size: 0.82rem;
     }
 
     .welcome-avatar-ring {
-        width: 76px;
-        height: 76px;
+        width: 80px;
+        height: 80px;
+    }
+
+    .input-wrapper {
+        padding: 5px 5px 5px 16px;
+    }
+
+    #send-btn {
+        width: 38px;
+        height: 38px;
     }
 }
 
 @media (max-width: 380px) {
     .persona-card {
-        min-width: 155px;
-        padding: 7px 10px;
+        min-width: 150px;
+        padding: 8px 10px;
         gap: 8px;
     }
 
@@ -729,7 +815,7 @@ body.persona-kshitij {
     }
 
     .persona-title {
-        font-size: 0.65rem;
+        font-size: 0.64rem;
     }
 
     .persona-avatar {
@@ -744,6 +830,43 @@ body.persona-kshitij {
 
     .chip {
         font-size: 0.72rem;
-        padding: 6px 12px;
+        padding: 7px 14px;
+    }
+
+    .welcome-avatar-ring {
+        width: 68px;
+        height: 68px;
+    }
+
+    #welcome-name {
+        font-size: 1.15rem;
+    }
+
+    .welcome-hint {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 320px) {
+    #app-header h1 {
+        font-size: 0.85rem;
+    }
+
+    .persona-card {
+        min-width: 135px;
+        padding: 7px 8px;
+    }
+
+    .persona-avatar {
+        width: 26px;
+        height: 26px;
+    }
+
+    .persona-name {
+        font-size: 0.72rem;
+    }
+
+    .persona-title {
+        display: none;
     }
 }
