@@ -64,12 +64,17 @@ def chat():
                 )
             )
 
-        max_retries = 2
+        fallback_models = [
+            "gemini-3.1-flash-lite-preview",
+            "gemini-2.5-flash",
+            "gemini-2.0-flash"
+        ]
+        
         last_error = None
-        for attempt in range(max_retries + 1):
+        for model_name in fallback_models:
             try:
                 response = client.models.generate_content(
-                    model="gemini-3.1-flash-lite-preview",
+                    model=model_name,
                     contents=contents,
                     config=types.GenerateContentConfig(
                         system_instruction=system_prompt,
@@ -82,16 +87,13 @@ def chat():
                 last_error = api_err
                 err_str = str(api_err)
                 if any(x in err_str for x in ["429", "RESOURCE_EXHAUSTED", "503", "UNAVAILABLE"]):
-                    if attempt < max_retries:
-                        wait_time = (attempt + 1) * 5
-                        print(f"[WARN] Rate limited, retrying in {wait_time}s (attempt {attempt + 1}/{max_retries})")
-                        time.sleep(wait_time)
-                        continue
-                    else:
-                        return jsonify({
-                            "error": "The API is rate-limited right now. Please wait a few seconds and try again."
-                        }), 429
+                    print(f"[WARN] Model {model_name} rate limited or unavailable. Trying next model...")
+                    continue
                 raise
+
+        return jsonify({
+            "error": "All AI models are currently busy or rate-limited. Please wait a few seconds and try again."
+        }), 429
 
     except Exception as e:
         import traceback
