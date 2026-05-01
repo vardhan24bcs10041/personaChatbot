@@ -2,6 +2,8 @@
 
 A persona-based AI chatbot that lets you have real conversations with three Scaler/InterviewBit personalities: **Anshuman Singh**, **Abhimanyu Saxena**, and **Kshitij Mishra**. Each persona has a meticulously crafted system prompt with distinct personality, vocabulary, and mentorship style — powered by Google Gemini 3.1 Flash Lite.
 
+-- by VARDHAN LADDA
+
 > **Live Demo:** [https://persona-chatbot-mewq.onrender.com](https://persona-chatbot-mewq.onrender.com)
 
 ---
